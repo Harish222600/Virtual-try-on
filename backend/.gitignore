@@ -1,0 +1,72 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Environment
+.env
+.venv
+venv/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Model Files & Checkpoints (Large files - download separately)
+*.pth
+*.onnx
+*.pt
+*.safetensors
+*.bin
+*.h5
+*.pkl
+*.pb
+
+# CatVTON Repository (Cloned dependency - don't commit)
+CatVTON/
+
+# OccFree-VTON (Project page only - not needed)
+OccFree-VTON-main/
+
+# CP-VTON+ (Deprecated - using CatVTON now)
+local_vton/
+onnx_tryon/
+
+# Model Directories
+models/
+checkpoints/
+runs/
+
+# Temporary Files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test Files
+test_*.py
+*_test.py
+
+# Deprecated Files (No longer used)
+local_tryon.py
+huggingface_tryon.py
+gemini_tryon.py
+simple_effective_tryon.py
+onnx_processor.py
+download_models.py

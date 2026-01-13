@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Try-On Project Documentation</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: { useMaxWidth: true, htmlLabels: true }
+        });
+    </script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px;
+            background-color: white;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #2c3e50;
+            page-break-after: avoid;
+        }
+
+        h1 {
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 10px;
+            margin-top: 50px;
+            font-size: 2.2em;
+        }
+
+        h2 {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+            margin-top: 35px;
+            font-size: 1.6em;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            margin-top: 25px;
+            color: #445566;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+            page-break-inside: avoid;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f6f8fa;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+
+        /* List Styling - FORCE REMOVE NUMBERING */
+        ul,
+        ol {
+            list-style-type: none !important;
+            padding-left: 0;
+        }
+
+        li {
+            margin-bottom: 8px;
+            padding-left: 15px;
+            border-left: 3px solid #eee;
+        }
+
+        strong {
+            color: #2c3e50;
+        }
+
+        .mermaid {
+            margin: 30px 0;
+            text-align: center;
+            page-break-inside: avoid;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Print Specific Styles */
+        @media print {
+            body {
+                width: 100%;
+                max-width: 100%;
+                margin: 0;
+                padding: 20px;
+                font-size: 11pt;
+            }
+
+            .no-print {
+                display: none;
+            }
+
+            h1 {
+                page-break-before: always;
+                margin-top: 0;
+            }
+
+            h1:first-of-type {
+                page-break-before: auto;
+            }
+
+            /* Diagram Sizing Fixes */
+            .mermaid {
+                display: block;
+                page-break-inside: avoid !important;
+                margin-bottom: 20px;
+                height: auto;
+                overflow: visible;
+            }
+
+            /* Force SVG to fit within the page dimensions */
+            .mermaid svg {
+                max-width: 100% !important;
+                max-height: 95vh !important;
+                /* Never exceed page height */
+                width: auto !important;
+                height: auto !important;
+            }
+
+            /* Colors */
+            th {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                background-color: #f6f8fa !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="no-print"
+        style="background-color: #e3f2fd; padding: 20px; border-radius: 8px; margin-bottom: 40px; border-left: 5px solid #2196f3;">
+        <h3 style="margin-top: 0;">Printing Instructions</h3>
+        <p>To save as a clean PDF:</p>
+        <ul style="list-style-type: disc !important; padding-left: 20px;">
+            <li style="border: none; padding-left: 0;">Press <code>Ctrl + P</code> (Windows) or <code>Cmd + P</code>
+                (Mac).</li>
+            <li style="border: none; padding-left: 0;">Select <strong>"Save as PDF"</strong> as the Destination.</li>
+            <li style="border: none; padding-left: 0;">Expand <strong>"More settings"</strong>.</li>
+            <li style="border: none; padding-left: 0;">Check <strong>"Background graphics"</strong> to see table
+                headers.</li>
+            <li style="border: none; padding-left: 0;"><strong>Scale:</strong> Keep as "Default" or select "Fit to
+                Printable Area" if text is too small.</li>
+        </ul>
+    </div>
+
+    <h1>Virtual Try-On Project Documentation</h1>
+
+    <h1>Data Models</h1>
+
+    <h2>ER Diagram</h2>
+    <p>The following Entity-Relationship Diagram represents the data structure for the Virtual Try-On application.</p>
+
+    <div class="mermaid">
+        erDiagram
+        Users {
+        string id PK
+        string email
+        string full_name
+        string password_hash
+        string phone
+        string role
+        string gender
+        int height
+        string body_type
+        string clothing_size
+        string jewelry_preference
+        string skin_tone
+        string[] preferred_categories
+        string[] preferred_colors
+        boolean is_active
+        }
+        Products {
+        string id PK
+        string name
+        string description
+        string category
+        string gender
+        string tryon_type
+        string body_mapping
+        float overlay_scale
+        float offset_x
+        float offset_y
+        float rotation
+        string image_url
+        boolean is_active
+        datetime created_at
+        }
+        Categories {
+        string id PK
+        string name
+        string description
+        string image_url
+        boolean is_active
+        datetime created_at
+        }
+
+        Users ||--o{ Products : "views/try-on"
+        Categories ||--o{ Products : "classifies"
+    </div>
+    <p><em>(Note: Some user preference fields condensed for diagram clarity. Full details in Data Dictionary.)</em></p>
+
+    <h2>Data Dictionary</h2>
+
+    <h3>Users Table</h3>
+    <p>Stores customer and administrator information and preferences.</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Field Name</th>
+                <th>Data Type</th>
+                <th>Key</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>id</td>
+                <td>String</td>
+                <td>PK</td>
+                <td>Unique identifier for the user.</td>
+            </tr>
+            <tr>
+                <td>email</td>
+                <td>String</td>
+                <td>Unique</td>
+                <td>User's email address (used for login).</td>
+            </tr>
+            <tr>
+                <td>password</td>
+                <td>String</td>
+                <td></td>
+                <td>Hashed password for authentication.</td>
+            </tr>
+            <tr>
+                <td>full_name</td>
+                <td>String</td>
+                <td></td>
+                <td>User's full display name.</td>
+            </tr>
+            <tr>
+                <td>role</td>
+                <td>String</td>
+                <td></td>
+                <td>Authorization role (user or admin). Default is user.</td>
+            </tr>
+            <tr>
+                <td>gender</td>
+                <td>String</td>
+                <td></td>
+                <td>User's gender for recommendations.</td>
+            </tr>
+            <tr>
+                <td>height</td>
+                <td>Integer</td>
+                <td></td>
+                <td>User's height in cm.</td>
+            </tr>
+            <tr>
+                <td>body_type</td>
+                <td>String</td>
+                <td></td>
+                <td>User's body type description.</td>
+            </tr>
+            <tr>
+                <td>clothing_size</td>
+                <td>String</td>
+                <td></td>
+                <td>Preferred clothing size (e.g., S, M, L).</td>
+            </tr>
+            <tr>
+                <td>skin_tone</td>
+                <td>String</td>
+                <td></td>
+                <td>Skin tone for better rendering.</td>
+            </tr>
+            <tr>
+                <td>tryon_image_url</td>
+                <td>String</td>
+                <td></td>
+                <td>URL of the user's uploaded photo for virtual try-on.</td>
+            </tr>
+            <tr>
+                <td>is_active</td>
+                <td>Boolean</td>
+                <td></td>
+                <td>Account status flag.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Products Table</h3>
+    <p>Stores catalog information for items available for virtual try-on.</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Field Name</th>
+                <th>Data Type</th>
+                <th>Key</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>id</td>
+                <td>String</td>
+                <td>PK</td>
+                <td>Unique identifier for the product.</td>
+            </tr>
+            <tr>
+                <td>name</td>
+                <td>String</td>
+                <td></td>
+                <td>Display name of the product.</td>
+            </tr>
+            <tr>
+                <td>category</td>
+                <td>String</td>
+                <td>FK</td>
+                <td>Category the product belongs to.</td>
+            </tr>
+            <tr>
+                <td>gender</td>
+                <td>String</td>
+                <td></td>
+                <td>Target gender (Men, Women, Unisex).</td>
+            </tr>
+            <tr>
+                <td>image_url</td>
+                <td>String</td>
+                <td></td>
+                <td>URL of the product image.</td>
+            </tr>
+            <tr>
+                <td>tryon_type</td>
+                <td>String</td>
+                <td></td>
+                <td>Type of try-on (Upper body, Lower body).</td>
+            </tr>
+            <tr>
+                <td>overlay_scale</td>
+                <td>Float</td>
+                <td></td>
+                <td>Scaling factor for AR overlay.</td>
+            </tr>
+            <tr>
+                <td>offset_x</td>
+                <td>Float</td>
+                <td></td>
+                <td>Horizontal offset for alignment.</td>
+            </tr>
+            <tr>
+                <td>offset_y</td>
+                <td>Float</td>
+                <td></td>
+                <td>Vertical offset for alignment.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Categories Table</h3>
+    <p>Classifies products into logical groups.</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Field Name</th>
+                <th>Data Type</th>
+                <th>Key</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>id</td>
+                <td>String</td>
+                <td>PK</td>
+                <td>Unique identifier for the category.</td>
+            </tr>
+            <tr>
+                <td>name</td>
+                <td>String</td>
+                <td></td>
+                <td>Name of the category.</td>
+            </tr>
+            <tr>
+                <td>description</td>
+                <td>String</td>
+                <td></td>
+                <td>Optional description of the category.</td>
+            </tr>
+            <tr>
+                <td>image_url</td>
+                <td>String</td>
+                <td></td>
+                <td>Representative image for the category.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Table Relationship</h2>
+
+    <h3>Users and Products</h3>
+    <ul>
+        <li><strong>Relationship:</strong> Indirect Many-to-Many (Conceptual).</li>
+        <li><strong>Description:</strong> A user can try on multiple products, and a product can be tried on by multiple
+            users.</li>
+    </ul>
+
+    <h3>Categories and Products</h3>
+    <ul>
+        <li><strong>Relationship:</strong> One-to-Many.</li>
+        <li><strong>Description:</strong> A single Category contains multiple Products. Each Product belongs to one
+            specific Category.</li>
+    </ul>
+
+    <h1>Process Model</h1>
+
+    <h2>Context Analysis Diagram</h2>
+    <p>This diagram illustrates the high-level interaction between external entities (User, Administrator) and the
+        Virtual Try-On System.</p>
+
+    <div class="mermaid">
+        graph TD
+        User["User"]
+        Admin["Administrator"]
+        System["Virtual Try-On System"]
+
+        User -- "Login / Register" --> System
+        User -- "View Products" --> System
+        User -- "Upload Photo" --> System
+        User -- "Request Try-On" --> System
+        System -- "Return Augmented Image" --> User
+        System -- "Profile Updates" --> User
+
+        Admin -- "Login" --> System
+        Admin -- "Manage Products" --> System
+        Admin -- "Manage Categories" --> System
+        System -- "Dashboard Stats" --> Admin
+    </div>
+
+    <h2>Modular Description</h2>
+    <p>The system is divided into three primary modules.</p>
+
+    <h3>User Module</h3>
+    <ul>
+        <li><strong>Authentication:</strong> Secure login, registration, and password recovery.</li>
+        <li><strong>Profile Management:</strong> Managing personal details, body measurements, and preferences.</li>
+        <li><strong>Browsing:</strong> Viewing available products and categories.</li>
+        <li><strong>Product Interaction:</strong> Selecting items for try-on.</li>
+    </ul>
+
+    <h3>Virtual Try-On Module (Core)</h3>
+    <ul>
+        <li><strong>Image Processing:</strong> Handles uploading and resizing of user photos.</li>
+        <li><strong>AR/Overlay Logic:</strong> Applies the clothing item onto the user's photo based on body mapping
+            points.</li>
+        <li><strong>Rendering:</strong> Generates the final "try-on" image for the user to view.</li>
+    </ul>
+
+    <h3>Administrator Module</h3>
+    <ul>
+        <li><strong>Dashboard:</strong> View system statistics (user count, active products).</li>
+        <li><strong>Product Management:</strong> CRUD operations for clothing items.</li>
+        <li><strong>Category Management:</strong> Organizing products into collections.</li>
+    </ul>
+
+    <h1>Presentation Slides</h1>
+
+    <h2>Title Slide</h2>
+    <p><strong>Title:</strong> Virtual Try-On System<br>
+        <strong>Subtitle:</strong> Revolutionizing E-Commerce with Augmented Reality<br>
+        <strong>Presented by:</strong> [Your Name/Team Name]
+    </p>
+
+    <h2>Project Overview</h2>
+    <p><strong>Objective:</strong> To build an interactive mobile application that allows users to virtually try on
+        clothing using their own photos.</p>
+    <p><strong>Key Features:</strong></p>
+    <ul>
+        <li>User Profiles: Personalized body measurements and preferences.</li>
+        <li>Virtual Try-On: Realistic AR overlay of clothing on user photos.</li>
+        <li>Admin Dashboard: Comprehensive management of products and users.</li>
+        <li>Secure Authentication: Role-based access.</li>
+    </ul>
+
+    <h2>Problem Statement</h2>
+    <p><strong>The Challenge:</strong></p>
+    <ul>
+        <li>High return rates in online fashion retail due to poor fit.</li>
+        <li>Inability to visualize how clothes look on one's specific body type.</li>
+    </ul>
+    <p><strong>The Solution:</strong></p>
+    <ul>
+        <li>A "Try-Before-You-Buy" digital experience.</li>
+        <li>Sizing recommendations based on user data.</li>
+    </ul>
+
+    <h2>System Architecture</h2>
+    <ul>
+        <li><strong>Frontend:</strong> React Native (Expo), NativeWind</li>
+        <li><strong>Backend:</strong> Python (FastAPI), Supabase</li>
+        <li><strong>Core Tech:</strong> AR overlay logic, JWT Security</li>
+    </ul>
+
+    <h2>Data Models Overview</h2>
+    <ul>
+        <li><strong>Users:</strong> Stores profile data, measurements, and preferences.</li>
+        <li><strong>Products:</strong> Catalog of items with specific AR parameters.</li>
+        <li><strong>Categories:</strong> Organizational hierarchy for products.</li>
+    </ul>
+
+    <h2>Process Flow</h2>
+    <ul>
+        <li><strong>Sign Up/Login:</strong> Create a profile with body metrics.</li>
+        <li><strong>Browse:</strong> Select a category and product.</li>
+        <li><strong>Upload:</strong> Take or upload a full-body photo.</li>
+        <li><strong>Try-On:</strong> System overlays product on user image.</li>
+        <li><strong>Result:</strong> View and save the generated look.</li>
+    </ul>
+
+    <h2>Admin Features</h2>
+    <ul>
+        <li><strong>Dashboard:</strong> Real-time statistics.</li>
+        <li><strong>Product Control:</strong> Add new inventory, adjust AR settings.</li>
+        <li><strong>User Management:</strong> Monitor user activity.</li>
+    </ul>
+
+    <h2>Future Enhancements</h2>
+    <ul>
+        <li>3D Modeling: Upgrade from 2D overlay to full 3D cloth simulation.</li>
+        <li>AI Recommendations: Machine learning suggestions.</li>
+        <li>Social Sharing: Direct sharing of try-on looks to social media.</li>
+    </ul>
+
+    <h2>Conclusion</h2>
+    <p>The Virtual Try-On System bridges the gap between physical and digital shopping.</p>
+    <p><strong>Thank You!</strong></p>
+
+</body>
+
+</html>
