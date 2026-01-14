@@ -1,10 +1,7 @@
-import { Platform } from 'react-native';
+import { API_URL } from './config';
 
-export const API_URL = Platform.select({
-    web: 'http://localhost:8000',
-    android: 'http://192.168.1.5:8000',
-    default: 'http://192.168.1.5:8000',
-});
+// Re-export for backward compatibility if needed, or just use it directly in this file
+export { API_URL };
 
 export const login = async (email, password) => {
     try {

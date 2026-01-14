@@ -723,11 +723,19 @@ async def process_virtual_tryon(
         processor = CAT_PROCESSOR
         
         try:
+            # Check user preferences for Quality
+            hq_mode = current_user.get('hq_rendering', True) # Default to True now for better quality
+            
+            target_h = 1024 if hq_mode else 768
+            target_w = 768 if hq_mode else 576
+
             result_image_bytes = await processor.process_virtual_tryon(
                 user_image_path=temp_user_image.name,
                 garment_image_path=temp_garment_image.name,
                 product_name=product.get('name', 'clothing item'),
-                product_category=product.get('category', 'Dress')
+                product_category=product.get('category', 'Dress'),
+                height=target_h,
+                width=target_w
             )
         except Exception as e:
             raise HTTPException(

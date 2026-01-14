@@ -1,6 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-const API_URL = 'http://192.168.1.5:8000'; // Update with your backend URL
+import { API_URL } from './config';
 
 /**
  * Fetch all products with optional category filter
